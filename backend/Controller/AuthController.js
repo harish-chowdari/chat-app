@@ -1,5 +1,7 @@
 const UserModel = require("../Models/UserModel")
 const bcrypt = require("bcryptjs")
+const generateToken = require("../Utils/GenerateToken")
+
 
 
 async function signUp(req,res) {
@@ -18,6 +20,7 @@ async function signUp(req,res) {
             {
                 return res.json({msg : "user already exist"})
             }
+
 
             const salt = await bcrypt.genSalt(10)
             const hassPassword = await bcrypt.hash(password, salt)
@@ -38,7 +41,7 @@ async function signUp(req,res) {
 
         if(newUser)
             {
-
+                generateToken(newUser._id, res)
                 await newUser.save()
                 return res.json({
                     fullName : newUser.fullName,
@@ -62,7 +65,31 @@ async function signUp(req,res) {
 
 
 async function logIn(req,res) {
-    console.log("login")
+
+    try
+    {
+        const {username, password} = req.body
+        const user = await UserModel.findOne({username})
+        const isPassword = await bcrypt.compare(password, user ? user.password : "" )
+
+        if(!user || !isPassword)
+            {
+                return res.json({msg : "user credentials are not correct"})
+            }
+        
+        return res.json({
+            fullName: user.fullName,
+            username : user.username,
+            profilePic: user.profilePic        
+            
+        })
+    }
+
+
+    catch(err)
+    {
+        console.log(err)
+    }
 }
 
 
