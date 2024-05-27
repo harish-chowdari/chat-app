@@ -1,5 +1,5 @@
 const express = require("express")
-const { sendMessage } = require("../Controller/MessageController")
+const { sendMessage, getMessages } = require("../Controller/MessageController")
 const protectRoute = require("../Middleware/ProtectRoute")
 const router = express.Router()
 
@@ -8,7 +8,7 @@ const router = express.Router()
 router.post("/send-message/:id", protectRoute, sendMessage)
 
 
-
+router.get("/get-message/:id", protectRoute, getMessages)
 
 
 
