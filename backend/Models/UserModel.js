@@ -6,10 +6,9 @@ const UserData = mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		username: {
+		userName: {
 			type: String,
 			required: true,
-			unique: true,
 		},
 		password: {
 			type: String,
@@ -19,7 +18,7 @@ const UserData = mongoose.Schema(
 		gender: {
 			type: String,
 			required: true,
-			enum: ["male", "female"],
+			enum: ["Male", "Female"],
 		},
 		profilePic: {
 			type: String,

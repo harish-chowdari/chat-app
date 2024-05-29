@@ -8,17 +8,17 @@ async function signUp(req,res) {
 
     try
     {
-        const {fullName,username,password, confirmPassword,gender,profilePic} = req.body
+        const {fullName,userName,password, confirmPassword,gender,profilePic} = req.body
 
         if(password !== confirmPassword)
             {
                 return res.json("passwords are not matching")
-            }
+            } 
 
-        const userExist = await UserModel.findOne({username})
+        const userExist = await UserModel.findOne({userName})
         if(userExist)
             {
-                return res.json({msg : "user already exist"})
+                return res.json({exist : "user already exist"})
             }
 
 
@@ -26,17 +26,17 @@ async function signUp(req,res) {
             const hassPassword = await bcrypt.hash(password, salt)
 
 
-        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?userName=${userName}`;
+		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?userName=${userName}`;
 
 
         
         const newUser = await new UserModel({
             fullName,
-            username,
+            userName,
             password : hassPassword,
             gender,
-            profilePic : gender === "male" ? boyProfilePic : girlProfilePic  
+            profilePic : gender === "Male" ? boyProfilePic : girlProfilePic  
         })
 
         if(newUser)
@@ -45,7 +45,7 @@ async function signUp(req,res) {
                 await newUser.save()
                 return res.json({
                     fullName : newUser.fullName,
-                    username : newUser.username,
+                    userName : newUser.userName,
                     profilePic: newUser.profilePic 
                 })
             }
@@ -68,8 +68,8 @@ async function logIn(req,res) {
 
     try
     {
-        const {username, password} = req.body
-        const user = await UserModel.findOne({username})
+        const {userName, password} = req.body
+        const user = await UserModel.findOne({userName})
         const isPassword = await bcrypt.compare(password, user ? user.password : "" )
 
         if(!user || !isPassword)
@@ -79,7 +79,7 @@ async function logIn(req,res) {
         
         return res.json({
             fullName: user.fullName,
-            username : user.username,
+            userName : user.userName,
             profilePic: user.profilePic        
             
         })
