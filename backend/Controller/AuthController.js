@@ -44,6 +44,7 @@ async function signUp(req,res) {
                 generateToken(newUser._id, res)
                 await newUser.save()
                 return res.json({
+                    _id: newUser._id,
                     fullName : newUser.fullName,
                     userName : newUser.userName,
                     profilePic: newUser.profilePic 
@@ -74,10 +75,13 @@ async function logIn(req,res) {
 
         if(!user || !isPassword)
             {
-                return res.json({msg : "user credentials are not correct"})
+                return res.json({notCorrect : "user credentials are not correct"})
             }
+
+        generateToken(user._id, res);
         
         return res.json({
+            _id:user._id,
             fullName: user.fullName,
             userName : user.userName,
             profilePic: user.profilePic        
@@ -93,13 +97,22 @@ async function logIn(req,res) {
 }
 
 
-
+const logout = (req, res) => {
+	try {
+		res.cookie("jwt", "", { maxAge: 0 });
+		res.status(200).json({ message: "Logged out successfully" });
+	} catch (error) {
+		console.log("Error in logout controller", error.message);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
 
 
 
 module.exports = {
     signUp,
-    logIn
+    logIn,
+    logout
 }
 
 
