@@ -1,17 +1,21 @@
-import React from 'react'
-import Conversion from './Conversion'
+import React from 'react';
+import Conversion from './Conversion';
+import useGetConversations from '../Hooks/useGetConversations';
 
 const Conversations = () => {
-  return (
-    <div>
-        <Conversion />
-        <Conversion />
-        <Conversion />
-        <Conversion />
-        <Conversion />
-        <Conversion />
-    </div>
-  )
-}
+  const { conversations } = useGetConversations();
+  console.log('conv : ', conversations);
 
-export default Conversations
+  return (
+    <div className="space-y-1">
+      {conversations.map((conversation) => (
+        <Conversion 
+          conversation={conversation} 
+          key={conversation._id}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default Conversations;

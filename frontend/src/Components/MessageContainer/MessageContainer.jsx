@@ -2,6 +2,7 @@ import React from 'react';
 import Messages from './Messages';
 import MessageInput from './MessageInput';
 import { TiMessages } from 'react-icons/ti';
+import useConversation from '../Zustand/useConversation';
 
 const NoChatSelected = () => {
   return (
@@ -15,19 +16,19 @@ const NoChatSelected = () => {
 };
 
 const MessageContainer = () => {
-  const noChatSelected = true; // This should be dynamic based on the chat selection
+  const { selectedConversation } = useConversation();
 
   return (
     <div className="flex flex-col h-full">
-      {noChatSelected ? (
+      {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
           <div className="flex-1 overflow-auto p-4">
-            <Messages />
+            <Messages conversation={selectedConversation} />
           </div>
           <div className="p-4 bg-gray-200">
-            <MessageInput />
+            <MessageInput conversation={selectedConversation} />
           </div>
         </>
       )}
