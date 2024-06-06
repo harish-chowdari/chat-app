@@ -1,6 +1,9 @@
 import React from 'react'
 import icon from "../../assets/user.svg"
 
+//FIXME: should
+//TODO: remove
+
 
 const Message = () => {
   return (

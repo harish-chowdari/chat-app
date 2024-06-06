@@ -5,7 +5,7 @@ import Logout from './Logout';
 
 const Sidebar = () => {
   return (
-    <div className="fixed top-0 left-0 w-1/5 bg-white p-4 shadow-lg h-screen flex flex-col justify-between">
+    <div className="w-1/5 bg-white p-4 shadow-lg h-full flex flex-col justify-between">
       <div>
         <SearchInput />
         <div className="mt-4 overflow-y-auto">
